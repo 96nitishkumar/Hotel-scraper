@@ -202,24 +202,24 @@ class MarriottHotelScraper
       )
       
       if response.success?
-        @logger.debug("✅ Successfully fetched #{url} (#{response.code})")
+        @logger.debug("Successfully fetched #{url} (#{response.code})")
         return Nokogiri::HTML(response.body)
       else
         raise "HTTP #{response.code}: #{response.message}"
       end
       
     rescue Net::OpenTimeout, Net::ReadTimeout => e
-      @logger.warn("⏰ Timeout fetching #{url}: #{e.message}. Retry #{attempts}/#{max_retries}")
+      @logger.warn("Timeout fetching #{url}: #{e.message}. Retry #{attempts}/#{max_retries}")
       sleep(delay * attempts) if attempts < max_retries # Exponential backoff
       retry if attempts < max_retries
       
     rescue => e
-      @logger.warn("❌ Error fetching #{url}: #{e.message}. Retry #{attempts}/#{max_retries}")
+      @logger.warn("Error fetching #{url}: #{e.message}. Retry #{attempts}/#{max_retries}")
       sleep(delay * attempts) if attempts < max_retries
       retry if attempts < max_retries
     end
     
-    @logger.error("🚫 Failed to fetch #{url} after #{max_retries} attempts")
+    @logger.error("Failed to fetch #{url} after #{max_retries} attempts")
     nil
   end
 end
